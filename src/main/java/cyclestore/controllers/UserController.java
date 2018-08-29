@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cyclestore.entities.User;
+import cyclestore.entities.UserRole;
 import cyclestore.repositories.UserRepository;
+import cyclestore.repositories.UserRolesRepository;
 
 @Controller
 @RequestMapping("/user")
@@ -19,6 +21,8 @@ public class UserController {
 	
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	UserRolesRepository userRoleRepository;
 	
 	@GetMapping("/add")
 	public String showAdduserForm(Model model) {
@@ -30,7 +34,12 @@ public class UserController {
 		if(bindingResult.hasErrors()) {
 			return "adduser";
 		} else {
+			user.setEnabled(true);
 			userRepository.save(user);
+			UserRole userRole = new UserRole();
+			userRole.setRole("ROLE_USER");
+			userRole.setUserId(user.getUserId());
+			userRoleRepository.save(userRole);
 			return "redirect:/home";
 		}
 	}
