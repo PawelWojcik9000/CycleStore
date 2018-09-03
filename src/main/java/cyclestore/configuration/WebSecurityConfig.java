@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/userpage/**").access("hasRole('ROLE_USER')")
 			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
 			.antMatchers("/db/**").access("hasRole('ROLE_ADMIN') and hasRole('ROLE_DBA')")
-			.and().formLogin()
+			.and().formLogin().loginPage("/login").loginProcessingUrl("/login")
 			.and().exceptionHandling().accessDeniedPage("/Access_Denied");
 
 	}
